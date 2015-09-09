@@ -1,7 +1,7 @@
 #!/bin/bash
 pushd `dirname $0` > /dev/null
 
-docker rm -f ship/shipui
+docker rm -f shipui
 
 docker build -t ship/shipui dockerized-shipui
 
