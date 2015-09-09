@@ -1,0 +1,13 @@
+<html>
+    <body>
+        <h1>Deploy management</h1>
+        <form action="/deploy" method="POST">
+            <select>
+                {% for app in apps %}
+                <option>{{app}}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="Submit" />
+        </form>
+    </body>
+</html>
