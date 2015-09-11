@@ -1,8 +1,7 @@
-URL = 'http://infra01.uji.es:4001/v2/keys/ujiapps/apps/all.yaml'
+URL = 'http://conf.uji.es/v2/keys/ujiapps/apps/all.yaml'
 
 import requests
 import yaml
-
 
 class AppsConfiguration:
     def get(self):
@@ -26,6 +25,10 @@ class AppsConfiguration:
         conf[app] = new_app_conf
         self.save(conf)
 
+    def save_todisk(self):
+        with open("environment.yml", "w+") as yaml_file:
+            yaml_file.write(yaml.dump(self.get(), default_flow_style=False))
+
     def new(self, app, host):
         conf = self.get()
 
@@ -42,7 +45,7 @@ class AppsConfiguration:
     memory: 198
     version: 8.0.22
     username: tomcat
-    password: tomcat 
+    password: tomcat
     ports:
       ajp: 6124
       http: 8124

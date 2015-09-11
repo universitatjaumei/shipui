@@ -1,69 +1,82 @@
-from ship.logger import ShipLogger
-from ship.project import ProjectBuilder
-from ship.validator import *
-from ship.errors import SVNException, ProjectIdNotFoundException
 import urllib2
 import yaml
 import simplejson
 import traceback
 import flask
+from ship.logger import ShipLogger
+from ship.project import ProjectBuilder
+from ship.validator import *
+from ship.errors import SVNException, ProjectIdNotFoundException
+from commons.apps_configuration import AppsConfiguration
+from commons.apps_properties import AppsProperties
 
-deploy_app = flask.Blueprint('deploy_app', __name__, template_folder='../templates')
+apps_conf = AppsConfiguration()
+apps_conf.save_todisk()
 
-def get_app_acronyms():
-    req = urllib2.Request("http://infra01.uji.es:4001/v2/keys/ujiapps/apps/all.yaml")
-    response = urllib2.urlopen(req)
-    data = simplejson.load(response)
-    yaml_text = data.get('node').get('value')
-    data = yaml.load(yaml_text)
-    apps = [ app.upper() for app in data.keys() ]
+def get_deploy_config():
+    f = open("config.yml")
+    data = yaml.safe_load(f)
+    f.close()
+    return data.get('deploy')
+
+config = get_deploy_config();
+workdir = config.get("workdir")
+svnurl = config.get("svnurl")
+version = "trunk"
+etcd_environment_url = config.get("etcd_environment_url")
+
+deploy_app = flask.Blueprint("deploy_app", __name__, template_folder="../templates")
+
+def get_app_acronyms(apps_conf):
+    apps = [ app.upper() for app in apps_conf.get().keys() ]
     apps.sort()
     return apps
 
 
 @deploy_app.route("/deploy", methods=["GET"])
 def index():
-    apps = get_app_acronyms()
+    apps = get_app_acronyms(apps_conf)
     return flask.render_template("deploy.html", apps=apps)
 
 
+def create_app_properties_file(app):
+    app_properties = AppsProperties(app)
+    app_properties.save_todisk()
+
 @deploy_app.route("/deploy", methods=["POST"])
 def deploy():
-    environment = request.args.get("environment") #"production"
-    home = request.args.get("home") #"/tmp/target"
-    url = request.args.get("url") #"svn://localhost/repos/SAMPLE"
-    project = request.args.get("project") #"sample"
-    key = request.args.get("key") #"smp"
-    version = request.args.get("version") #"trunk"
+    project_name = flask.request.form["app"].lower()
+    create_app_properties_file(project_name)
 
     try:
-        app.logger.info("Initializing project construction")
+        flask.current_app.logger.info("Initializing project construction")
 
         rules = [ ConfigFileValidationRule, ConsoleLogValidationRule,
                   PomXMLValidationRule, CompiledPackageExistsValidationRule ]
 
         try:
-            project = ProjectBuilder(HOME, PROJECT_NAME, "/etc/uji/%s/app.properties" % KEY) \
-                .with_subversion(URL, VERSION) \
+            project = ProjectBuilder(workdir, project_name, "/etc/uji/%s/app.properties" % project_name) \
+                .with_subversion(svnurl % (project_name.upper(), project_name), version) \
                 .with_maven() \
+                .with_tomcat( { "start_tomcat_after_deploy" : False }) \
                 .with_validation_rules(rules) \
                 .build() \
-                .deploy(ENVIRONMENT)
+                .deploy()
         except SystemExit as e:
-            app.logger.error(traceback.format_exc())
-            return 'faillll'
+            flask.current_app.logger.error(traceback.format_exc())
+            return "faillll"
 
-        app.logger.info("Finished succesfully!!")
+        flask.current_app.logger.info("Finished succesfully!!")
     except SVNException as e:
-        app.logger.error("Invalid or unauthorized SVN repository '" + PROJECT_NAME + "'")
+        flask.current_app.logger.error("Invalid or unauthorized SVN repository "" + PROJECT_NAME + """)
         return "fail :("
 
     except ProjectIdNotFoundException as e:
-        app.logger.error("ProjectID not found in Tomcat")
+        flask.current_app.logger.error("ProjectID not found in Tomcat")
         return "fail :("
 
     except Exception as e:
-        app.logger.error(traceback.format_exc())
+        flask.current_app.logger.error(traceback.format_exc())
         return "fail :("
 
     return  "ole :)"

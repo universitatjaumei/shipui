@@ -2,7 +2,7 @@
     <body>
         <h1>Deploy management</h1>
         <form action="/deploy" method="POST">
-            <select>
+            <select name="app">
                 {% for app in apps %}
                 <option>{{app}}</option>
                 {% endfor %}
