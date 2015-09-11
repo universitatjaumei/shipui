@@ -10,10 +10,12 @@ class AppsProperties:
         self.app = app
 
     def get(self):
-        #r = requests.get(URL % self.app)
-        r = requests.get(URL % 'adc')
+        r = requests.get(URL % self.app)
         data = r.json()
-        return data["node"]["value"]
+        if data.get("node") and data.get("node").get("value"):
+            return data["node"]["value"]
+        else:
+            return ''
 
     def create_app_properties_directory(self):
         try:
@@ -25,6 +27,18 @@ class AppsProperties:
         self.create_app_properties_directory()
         with codecs.open("/etc/uji/%s/app.properties" % self.app, "w+", "utf-8") as properties_file:
             properties_file.write(self.get())
+
+    def save(self, properties):
+        requests.put(URL % self.app, data={"value": properties})
+
+    def new(self):
+        properties = self.get()
+
+        if properties != "":
+            raise Exception("App already exists")
+
+        self.save('')
+
 
 
 if __name__ == "__main__":

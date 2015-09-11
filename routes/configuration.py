@@ -3,14 +3,14 @@ from commons.apps_configuration import AppsConfiguration
 
 conf_app = flask.Blueprint('conf_app', __name__, template_folder='../templates')
 
-@conf_app.route("/etcd")
+@conf_app.route("/conf")
 def page_apps():
     apps_conf = AppsConfiguration()
     conf = apps_conf.get()
-    return flask.render_template('apps.html', conf=conf)
+    return flask.render_template('configuration.html', conf=conf)
 
 
-@conf_app.route("/conf", methods=['GET'])
+@conf_app.route("/api/apps", methods=['GET'])
 def all_apps():
     apps_conf = AppsConfiguration()
     return flask.jsonify(apps_conf.get())
