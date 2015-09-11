@@ -61,3 +61,13 @@ class AppsConfiguration:
         conf.pop(app, None)
 
         self.save(conf)
+
+if __name__ == "__main__":
+    app = AppsConfiguration()
+    with open("environment.yml", "r") as stream:
+        y = yaml.load(stream)
+        d = yaml.dump(y, default_flow_style=False)
+
+        print d
+        # Write Full file into etcd
+        requests.put(URL, data={"value": d})
