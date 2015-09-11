@@ -1,10 +1,12 @@
 import flask
 from routes.deploy import deploy_app
-from routes.conf import conf_app
+from routes.configuration import conf_app
+from routes.properties import properties_app
 
 app = flask.Flask(__name__)
 app.register_blueprint(deploy_app)
 app.register_blueprint(conf_app)
+app.register_blueprint(properties_app)
 
 @app.route("/", methods=["GET"])
 def index():
