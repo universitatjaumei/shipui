@@ -11,6 +11,12 @@ RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 RUN mkdir /root/.ssh; chmod 600 /root/.ssh
 ADD id_rsa /root/.ssh/id_rsa
 
+# Maven repositories
+ADD m2 /root/.m2
+
+# Subversion access
+ADD subversion /root/.subversion
+
 # Install pip
 RUN easy_install pip
 

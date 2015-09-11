@@ -1,5 +1,5 @@
 import flask
-from config import AppsConfiguration
+from commons.apps_configuration import AppsConfiguration
 
 conf_app = flask.Blueprint('conf_app', __name__, template_folder='../templates')
 
