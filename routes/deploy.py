@@ -1,6 +1,11 @@
 import urllib2
 import yaml
-import simplejson
+
+try:
+    import simplejson
+except Exception as e:
+    import json as simplejson
+
 import traceback
 import flask
 from ship.logger import ShipLogger
@@ -58,7 +63,7 @@ def deploy():
             project = ProjectBuilder(workdir, project_name, "/etc/uji/%s/app.properties" % project_name) \
                 .with_subversion(svnurl % (project_name.upper(), project_name), version) \
                 .with_maven() \
-                .with_tomcat( { "start_tomcat_after_deploy" : False }) \
+                .with_tomcat( { "start_tomcat_after_deploy" : True }) \
                 .with_validation_rules(rules) \
                 .build() \
                 .deploy()
