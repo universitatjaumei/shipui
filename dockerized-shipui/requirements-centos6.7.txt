@@ -1,0 +1,4 @@
+fabric
+pyyaml
+flask
+requests
