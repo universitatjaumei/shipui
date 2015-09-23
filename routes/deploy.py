@@ -8,12 +8,16 @@ except Exception as e:
 
 import traceback
 import flask
-from ship.logger import ShipLogger
 from ship.project import ProjectBuilder
 from ship.validator import *
 from ship.errors import SVNException, ProjectIdNotFoundException
 from commons.apps_configuration import AppsConfiguration
 from commons.apps_properties import AppsProperties
+
+from ship.logger import ShipLogger
+
+
+ShipLogger.setup_logger()
 
 apps_conf = AppsConfiguration()
 apps_conf.save_todisk()
