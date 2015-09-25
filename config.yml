@@ -3,4 +3,4 @@ deploy:
     etcd_environment_url:  http://conf.uji.es/v2/keys/ujiapps/apps/all.yaml
     etcd_app_properties_url: http://conf.uji.es/v2/keys/ujiapps/apps/%s/app.properties
     version: trunk
-    workdir: /tmp
+    workdir: /tmp/shipui
