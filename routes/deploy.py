@@ -14,11 +14,6 @@ from ship.errors import SVNException, ProjectIdNotFoundException
 from commons.apps_configuration import AppsConfiguration
 from commons.apps_properties import AppsProperties
 
-from ship.logger import ShipLogger
-
-
-ShipLogger.setup_logger()
-
 apps_conf = AppsConfiguration()
 apps_conf.save_todisk()
 
@@ -56,9 +51,10 @@ def create_app_properties_file(app):
 def deploy():
     project_name = flask.request.form["app"].lower()
     create_app_properties_file(project_name)
+    logger = logging.getLogger("werkzeug")
 
     try:
-        flask.current_app.logger.info("Initializing project construction")
+        logger.info("Initializing project construction")
 
         rules = [ ConfigFileValidationRule, ConsoleLogValidationRule,
                   PomXMLValidationRule, CompiledPackageExistsValidationRule ]
@@ -75,13 +71,13 @@ def deploy():
             flask.current_app.logger.error(traceback.format_exc())
             return "faillll"
 
-        flask.current_app.logger.info("Finished succesfully!!")
+        logger.info("Finished succesfully!!")
     except SVNException as e:
-        flask.current_app.logger.error("Invalid or unauthorized SVN repository "" + PROJECT_NAME + """)
+        logger.error("Invalid or unauthorized SVN repository "" + PROJECT_NAME + """)
         return "fail :("
 
     except ProjectIdNotFoundException as e:
-        flask.current_app.logger.error("ProjectID not found in Tomcat")
+        logger.error("ProjectID not found in Tomcat")
         return "fail :("
 
     except Exception as e:
