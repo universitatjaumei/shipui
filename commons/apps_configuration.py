@@ -29,35 +29,64 @@ class AppsConfiguration:
         with open("environment.yml", "w+") as yaml_file:
             yaml_file.write(yaml.dump(self.get(), default_flow_style=False))
 
+    def get_next_port_offset(self, conf):
+        next_port_offset = 0
+        for key, value in conf.items():
+            port = value.get("tomcat").get("ports").get("http")
+            offset = port - int(port/100)*100
+
+            if offset > next_port_offset:
+                next_port_offset = offset
+
+
+        return next_port_offset + 1
+
     def new(self, app, host):
         conf = self.get()
 
         if conf.has_key(app):
             raise Exception("App already exists")
 
-        new_config = """%s:
-  host: %s
-  java: 8
-  port: 22
-  user: aplicacions
-  tomcat:
-    base: /mnt/data/aplicacions/server/tomcat
-    memory: 198
-    version: 8.0.22
+        port = self.get_next_port_offset(conf)
+
+        app_data = {
+            "project": "uji-" + app,
+            "host": host,
+            "ajp": 6100 + port,
+            "http": 8100 + port,
+            "jmx": 9600 + port,
+            "redirect": 9100 + port,
+            "shutdown": 7100 + port
+        }
+
+        new_config = """
+java: 8
+project: %(project)s
+tomcat:
+  admin:
+    password: infrapod136
     username: tomcat
-    password: tomcat
-    ports:
-      ajp: 6124
-      http: 8124
-      jmx: 9624
-      redirect: 9124
-      shutdown: 7124""" % (app, host)
+  base: /mnt/data/aplicacions/server/tomcat
+  connection:
+    host: %(host)s
+    port: 22
+    type: ssh
+    username: aplicacions
+  memory: 198
+  ports:
+    ajp: %(ajp)s
+    http: %(http)s
+    jmx: %(jmx)s
+    redirect: %(redirect)s
+    shutdown: %(shutdown)s
+  version: 8.0.22""" % app_data
 
         conf[app] = yaml.load(new_config)
         self.save(conf)
 
     def delete(self, app):
         conf = self.get()
+
         conf.pop(app, None)
 
         self.save(conf)
