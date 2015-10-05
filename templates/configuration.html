@@ -90,10 +90,10 @@
             });
 
             $("#delete-config").click(function (e) {
-                var formData = $("#form-new").serializeObject();
+                var app = $("#apps").val();
 
                 $.ajax({
-                    url: "/conf/" + formData.app,
+                    url: "/conf/" + app,
                     method: "DELETE",
                     success: function (data) {
                         window.location.reload();
