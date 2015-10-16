@@ -1,21 +1,3 @@
-###########################################################################
-#                                                                         #
-#  This program is free software; you can redistribute it and/or modify   #
-#  it under the terms of the GNU General Public License as published by   #
-#  the Free Software Foundation; either version 2 of the License, or      #
-#  (at your option) any later version.                                    #
-#                                                                         #
-#  This program is distributed in the hope that it will be useful, but    #
-#  WITHOUT ANY WARRANTY; without even the implied warranty of             #
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU      #
-#  General Public License for more details.                               #
-#                                                                         #
-###########################################################################
-
-
-#===============================================================================
-# Imports
-#===============================================================================
 import flask
 import xmlrpclib
 import urllib
@@ -95,21 +77,19 @@ class LSM:
     def _dTok(self, k, c):
         if len(k) == 0:
             return ''
+
         msg = base64.b64decode(c)
+
         if len(k) != len(msg):
             return ''
-        # @warning: why ml and kl? They should be the same at this point
+
         ml = len(msg)
         kl = len(k)
         newmsg = ""
-        #=======================================================================
-        # PHP code
-        # for ($i = 0; $i < $ml; $i++){
-        #   $newmsg = $newmsg . ($msg[$i] ^ $k[$i % $kl]);
-        # }
-        #=======================================================================
+
         for i in range(ml):
             newmsg += chr(ord(msg[i]) ^ ord(k[i % kl]))
+
         return newmsg
 
 
@@ -139,17 +119,26 @@ class LSM:
     def _set_cookie(self, cookie_name, cookie_value, expiration):
         self._response_data.get("cookies")[cookie_name] = { "name": cookie_name, "value": cookie_value, "expires": expiration }
 
-    def _get_cookie(self, cookie_name):
-        return self._response_data.get("cookies").get(cookie_name)
+    def _get_response_cookie(self, cookie_name):
+        cookie = self._response_data.get("cookies").get(cookie_name)
 
-    def _lsm_get_login_redirect(self, url=""):
+        if cookie:
+            return cookie.get("value")
+        else:
+            return ""
+
+    def _get_login_redirect(self, url=""):
         """
         Returns the SSO authentication redirect.
 
         """
         url = self._get_url(url)
-        idx = self._get_cookie(self.idx_cookie_name)
-        redirect_url = self.sso_url + "?Url=" + urllib.quote_plus(url) + "&lang=" + self._lsm_get_lang() + "&ident=" + self.domain + "&dimitri=" + idx.get("value")
+        idx = self._get_response_cookie(self.idx_cookie_name)
+
+        if not idx:
+            flask.abort(500)
+
+        redirect_url = self.sso_url + "?Url=" + urllib.quote_plus(url) + "&lang=" + self._lsm_get_lang() + "&ident=" + self.domain + "&dimitri=" + idx
         self._set_redirect_url(redirect_url)
 
         return self._response_data
@@ -173,22 +162,19 @@ class LSM:
     def _lsm_get_lsmsession(self):
         LSMSession = flask.request.cookies.get(self.session_cookie_name)
 
-        pk, idx = self._get_pk_idx()
-        self._set_pk_idx(pk, idx)
 
         if LSMSession:
             return LSMSession
 
-        if not 'UJITok' in flask.request.args:
-            self._lsm_get_login_redirect()
-            return ""
+        pk, idx = self._get_pk_idx()
 
-        if 'UJITok' in flask.request.args and not flask.request.args.get("UJITok"):
-            self._lsm_get_logout_redirect()
+        if not 'UJITok' in flask.request.args and not flask.request.args.get("UJITok"):
+            #self._lsm_get_logout_redirect()
             return ""
 
         if pk:
-            LSMSession = self._dTok(pk, flask.request.args.get("UJITok"))
+            UJITok = urllib.unquote(flask.request.args.get("UJITok"))
+            LSMSession = self._dTok(pk, UJITok)
 
         return LSMSession
 
@@ -201,12 +187,12 @@ class LSM:
         pk = flask.request.cookies[self.passkey_cookie_name] if self.passkey_cookie_name in flask.request.cookies else ""
         idx = flask.request.cookies[self.idx_cookie_name] if self.idx_cookie_name in flask.request.cookies else ""
 
-        if not pk and not idx and self._response_data.get("cookies").get(self.passkey_cookie_name):
-            pk = self._get_cookie(self.passkey_cookie_name).get("value")
-            idx = self._response_data.get("cookies").get(self.idx_cookie_name).get("value")
+        if not pk and not idx and self._get_response_cookie(self.passkey_cookie_name):
+            pk = self._get_response_cookie(self.passkey_cookie_name)
+            idx = self._response_data.get("cookies").get(self.idx_cookie_name)
 
         if idx and pk:
-            return [ idx, pk ]
+            return [ pk, idx ]
 
         server = xmlrpclib.Server(self.server_url);
 
@@ -220,20 +206,20 @@ class LSM:
             idx = xmlrpc_response[0]
             pk = xmlrpc_response[1]
 
-            return [ idx, pk ]
+            self._set_pk_idx(pk, idx)
+
+            return [ pk, idx ]
 
         return [ "", "" ]
 
-    def lsm_login(self, url=""):
+    def logout(self, url=""):
+        return self._lsm_get_logout_redirect(url)
+
+    def login(self, url=""):
         LSMSession = self._lsm_get_lsmsession()
 
-        print self._response_data
-        # Redirect to logout
-        if self._get_redirect_url():
-            return self._response_data
-
         if not LSMSession:
-            return self._lsm_get_login_redirect()
+            return self._get_login_redirect()
 
         connect = xmlrpclib.Server(self.server_url);
 
@@ -245,19 +231,20 @@ class LSM:
 
         if autenticado:
             self._set_cookie(self.session_cookie_name, gLSMSession, None)
+            #self._set_redirect_url(self._get_url());
+
             return self._response_data
 
         pk, idx = self._get_pk_idx()
-        self._set_pk_idx(pk, idx)
 
-        return self._lsm_get_login_redirect()
+        return self._get_login_redirect()
 
-    def lsm_get_login(self):
+    def get_login(self):
 
         LSMSession = self._lsm_get_lsmsession()
 
         if not LSMSession:
-            return False
+            return ""
 
         # Call the server and get our result.
         connect = xmlrpclib.Server(self.server_url);
@@ -265,9 +252,16 @@ class LSM:
 
         user = xmlrpc_response[0]
 
+        if user and flask.request.args.get("UJITok"):
+            self._set_cookie(self.session_cookie_name, LSMSession, None);
+            self._set_redirect_url(self._get_url())
+
         return user
 
-    def compose_response(self, res):
+    def compose_response(self, res=None):
+        if not res:
+            res = flask.make_response()
+
         if self._response_data.get("redirect"):
             res = flask.make_response(flask.redirect(self._response_data.get("redirect")))
 

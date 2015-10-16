@@ -15,11 +15,16 @@ app.register_blueprint(properties_app)
 
 @app.route("/", methods=["GET"])
 def index():
-    return flask.render_template("index.html")
+    lsm = flask_lsm_auth.LSM()
+
+    return flask.render_template("index.html", user=lsm.get_login())
 
 @app.route("/logout", methods=["GET"])
 def logout():
-    return lsm.lsm_logout()
+    lsm = flask_lsm_auth.LSM()
+    lsm.logout(flask.request.url_root)
+
+    return lsm.compose_response()
 
 
 def setup_log():
@@ -30,16 +35,16 @@ def setup_log():
     logger.setLevel(logging.INFO)
     logger.addHandler(handler)
 
-#@app.after_request
-#def after_request(res):
-#
-#    lsm = flask_lsm_auth.LSM()
-#    app.logger.info("Requesting %s...", flask.request.url)
-#
-#    if not lsm.lsm_get_login():
-#        lsm.lsm_login()
-#
-#    return lsm.compose_response(res)
+@app.after_request
+def after_request(res):
+
+    lsm = flask_lsm_auth.LSM()
+    app.logger.info("Requesting %s...", flask.request.url)
+
+    if not lsm.get_login():
+        lsm.login()
+
+    return lsm.compose_response(res)
 
 if __name__ == "__main__":
 
