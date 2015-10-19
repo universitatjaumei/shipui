@@ -1,0 +1,29 @@
+<!doctype html>
+<head>
+    {% block head %}{% endblock %}
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Raleway:200">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <div class="layout">
+        <div class="menu">
+            <div class="pure-menu">
+                <a class="pure-menu-heading" href="/">ShipUI</a>
+
+                <ul class="pure-menu-list">
+                    <li class="pure-menu-item{% if section=='deploy' %} pure-menu-selected{% endif %}"><a href="/deploy" class="pure-menu-link">Deployments</a></li>
+                    <li class="pure-menu-item{% if section=='conf' %} pure-menu-selected{% endif %}"><a href="/conf" class="pure-menu-link">Configuration</a></li>
+                    <li class="pure-menu-item{% if section=='properties' %} pure-menu-selected{% endif %}"><a href="/properties" class="pure-menu-link">APP.properties</a></li>
+                    <li class="pure-menu-item{% if section=='templates' %} pure-menu-selected{% endif %}"><a href="/templates" class="pure-menu-link">Templates</a></li>
+                    <li class="pure-menu-item{% if section=='templates' %} pure-menu-selected{% endif %}"><a href="/logout" class="pure-menu-link">Logout</a></li>
+
+                </ul>
+                <p class="pure-menu-footer">Authenticated as {{ user }}</p>
+            </div>
+        </div>
+    <div class="main">
+        {% block body %}{% endblock %}
+    </div>
+</body>

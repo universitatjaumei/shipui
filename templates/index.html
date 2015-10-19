@@ -1,11 +1,10 @@
-<html>
-  <body>
-      <p>Authenticated as <strong>{{ user }}</strong>.</p>  
-      <ul>
-          <li><a href="/deploy">Deployments management</a></li>
-          <li><a href="/conf">Configuration management</a></li>
-          <li><a href="/properties">APP.properties management</a></li>
-          <li><a href="/logout">Logout</a></li>
-      </ul>
-  </body>
-</html>
+{% extends "layout.html" %}
+{% block body %}
+    <p>Authenticated as <strong>{{ user }}</strong>.</p>
+    <ul>
+      <li><a href="/deploy">Deployments management</a></li>
+      <li><a href="/conf">Configuration management</a></li>
+      <li><a href="/properties">APP.properties management</a></li>
+      <li><a href="/logout">Logout</a></li>
+    </ul>
+{% endblock %}

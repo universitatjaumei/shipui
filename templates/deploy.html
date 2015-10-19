@@ -1,7 +1,11 @@
-<html>
-    <body>
+{% extends "layout.html" %}
+{% block body %}
+    <div class="header">
         <h1>Deploy management</h1>
-        <form action="/deploy" method="POST">
+        <h2>Select the project to deploy and press "Submit"</h2>
+    </div>
+    <div class="content">
+        <form class="deploy-form" action="/deploy" method="POST" >
             <select name="app">
                 {% for app in apps %}
                 <option>{{app}}</option>
@@ -9,5 +13,5 @@
             </select>
             <input type="submit" value="Submit" />
         </form>
-    </body>
-</html>
+    </div>
+{% endblock %}

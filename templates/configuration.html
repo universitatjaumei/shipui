@@ -1,10 +1,8 @@
-<!doctype html>
-<head>
+{% extends "layout.html" %}
+{% block head %}
     <title>Deployment configuration manager</title>
-
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-
     <script>
         $.fn.serializeObject = function()
         {
@@ -102,26 +100,31 @@
             });
         });
     </script>
-</head>
-<body>
-    <h1>Deployment configuration manager</h1>
+{% endblock %}
+{% block body %}
+    <div class="header">
+        <h1>Deployment configuration manager</h1>
+        <h2>Manage/create/delete the configuration variables of each one of the UJI projects</h2>
+    </div>
 
-    <form>
-        <select id="apps">
-        </select>
-    </form>
+    <div class="content">
+        <form>
+            <select id="apps">
+            </select>
+        </form>
 
-    <form>
-        <textarea name="props" rows="20" style="width:100%"></textarea>
-        <input type="button" id="update-config" value="Guardar app" />
-        <input type="button" id="delete-config" value="Borrar app" />
-    </form>
+        <form>
+            <textarea name="props" rows="20" style="width:100%"></textarea>
+            <input type="button" id="update-config" value="Guardar app" />
+            <input type="button" id="delete-config" value="Borrar app" />
+        </form>
 
-    <h1>Nueva</h1>
+        <h1>Nueva</h1>
 
-    <form id="form-new">
-        <input type="text" name="app" value="xxx" />
-        <input type="text" name="host" value="apexp02.uji.es" />
-        <input type="button" id="new-config" value="Guardar" />
-    </form>
-</body>
+        <form id="form-new">
+            <input type="text" name="app" value="xxx" />
+            <input type="text" name="host" value="apexp02.uji.es" />
+            <input type="button" id="new-config" value="Guardar" />
+        </form>
+    </div>
+{% endblock %}
