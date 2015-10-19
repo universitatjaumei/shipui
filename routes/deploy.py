@@ -1,5 +1,4 @@
 import urllib2
-import yaml
 
 try:
     import simplejson
@@ -13,21 +12,12 @@ from ship.validator import *
 from ship.errors import SVNException, ProjectIdNotFoundException
 from commons.apps_configuration import AppsConfiguration
 from commons.apps_properties import AppsProperties
+from commons.ship_configuration import ShipUIConfig
+import flask_lsm_auth
 
-apps_conf = AppsConfiguration()
+shipui_conf = ShipUIConfig()
+apps_conf = AppsConfiguration(shipui_conf.get("etcd_environment_url"))
 apps_conf.save_todisk()
-
-def get_deploy_config():
-    f = open("config.yml")
-    data = yaml.safe_load(f)
-    f.close()
-    return data.get('deploy')
-
-config = get_deploy_config();
-workdir = config.get("workdir")
-svnurl = config.get("svnurl")
-version = "trunk"
-etcd_environment_url = config.get("etcd_environment_url")
 
 deploy_app = flask.Blueprint("deploy_app", __name__, template_folder="../templates")
 
@@ -40,7 +30,9 @@ def get_app_acronyms(apps_conf):
 @deploy_app.route("/deploy", methods=["GET"])
 def index():
     apps = get_app_acronyms(apps_conf)
-    return flask.render_template("deploy.html", apps=apps)
+    lsm = flask_lsm_auth.LSM()
+
+    return flask.render_template("deploy.html", section="deploy", apps=apps, user=lsm.get_login())
 
 
 def create_app_properties_file(app):
@@ -59,9 +51,17 @@ def deploy():
         rules = [ ConfigFileValidationRule, ConsoleLogValidationRule,
                   PomXMLValidationRule, CompiledPackageExistsValidationRule ]
 
+        conf = apps_conf.get().get(project_name.lower())
+        workdir = shipui_conf.get("workdir")
+        svnurl = shipui_conf.get("svnurl")
+        version = shipui_conf.get("version")
+        svn_web_repository = svnurl % (project_name.upper(), conf.get("project"))
+
+        print svn_web_repository, version
+
         try:
             project = ProjectBuilder(workdir, project_name, "/etc/uji/%s/app.properties" % project_name) \
-                .with_subversion(svnurl % (project_name.upper(), project_name), version) \
+                .with_subversion(svn_web_repository, version) \
                 .with_maven() \
                 .with_tomcat( { "start_tomcat_after_deploy" : True }) \
                 .with_validation_rules(rules) \
