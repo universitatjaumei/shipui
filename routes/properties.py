@@ -1,11 +1,13 @@
 import flask
 from commons.apps_properties import AppsProperties
+import flask_lsm_auth
 
 properties_app = flask.Blueprint('properties_app', __name__, template_folder='../templates')
 
 @properties_app.route("/properties")
 def page_apps():
-    return flask.render_template('properties.html')
+    lsm = flask_lsm_auth.LSM()
+    return flask.render_template('properties.html', section="properties", user=lsm.get_login())
 
 
 @properties_app.route("/properties/<app>", methods=['GET'])
