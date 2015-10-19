@@ -1,14 +1,15 @@
-URL = 'http://conf.uji.es/v2/keys/ujiapps/apps/all.yaml'
-
 import requests
 import yaml
 
 class AppsConfiguration:
+    def __init__(self, url):
+        self.url = url
+
     def get(self):
-        r = requests.get(URL)
+        r = requests.get(self.url)
         data = r.json()
         yaml_content = data["node"]["value"]
-
+        
         return yaml.load(yaml_content)
 
     def serialize_app(self, app):
