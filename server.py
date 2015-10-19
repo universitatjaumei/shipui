@@ -15,9 +15,7 @@ app.register_blueprint(properties_app)
 
 @app.route("/", methods=["GET"])
 def index():
-    lsm = flask_lsm_auth.LSM()
-
-    return flask.render_template("index.html", user=lsm.get_login())
+    return flask.redirect("/deploy")
 
 @app.route("/logout", methods=["GET"])
 def logout():
