@@ -1,4 +1,11 @@
 {% extends "layout.html" %}
+{% block head %}
+    <title>Deployment manager</title>
+    <script src="{{ url_for('static', filename='components/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='components/socket.io-client/socket.io.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/ansispan.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/deploy.js') }}"></script>
+{% endblock %}
 {% block body %}
     <div class="header">
         <h1>Deploy management</h1>
@@ -11,7 +18,22 @@
                 <option>{{app}}</option>
                 {% endfor %}
             </select>
-            <input type="submit" value="Submit" />
+            <button>Submit</button>
         </form>
+        <div class="deploying-message">
+          <div class="spinner">
+              <div class="double-bounce1"></div>
+              <div class="double-bounce2"></div>
+          </div>
+          <div class="sk-folding-cube">
+            <div class="sk-cube1 sk-cube"></div>
+            <div class="sk-cube2 sk-cube"></div>
+            <div class="sk-cube4 sk-cube"></div>
+            <div class="sk-cube3 sk-cube"></div>
+          </div>
+          <div class="title">Deploying...</div>
+        </div>
+
+        <pre class="log"></pre>
     </div>
 {% endblock %}
