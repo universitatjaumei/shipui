@@ -15,7 +15,7 @@
         <form class="deploy-form" action="/deploy" method="POST" >
             <select name="app">
                 {% for app in apps %}
-                <option>{{app}}</option>
+                <option data-alternative="{{ app.alternative }}">{{ app.name }}</option>
                 {% endfor %}
             </select>
             <button>Submit</button>

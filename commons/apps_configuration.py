@@ -9,15 +9,29 @@ class AppsConfiguration:
         r = requests.get(self.url)
         data = r.json()
         yaml_content = data["node"]["value"]
-        
+
         return yaml.load(yaml_content)
+
+    def get_applications(self):
+        config = self.get()
+        result = []
+
+        keys = config.keys()
+        keys.sort()
+        for key in keys:
+            if 'path' in config[key]:
+                result.append({ 'name': key.upper(), 'alternative':config[key]['path'].upper() })
+            else:
+                result.append({ 'name': key.upper(), 'alternative': key.upper() })
+
+        return result
 
     def serialize_app(self, app):
         return yaml.dump(self.get()[app], default_flow_style=False)
 
     def save(self, conf):
         data = yaml.dump(conf, default_flow_style=False)
-        requests.put(URL, data={"value": data})
+        requests.put(self.url, data={"value": data})
 
     def save_app(self, app, data):
         new_app_conf = yaml.load(data)
@@ -100,4 +114,4 @@ if __name__ == "__main__":
 
         print d
         # Write Full file into etcd
-        requests.put(URL, data={"value": d})
+        requests.put(self.url, data={"value": d})

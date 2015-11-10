@@ -25,7 +25,7 @@ $(document).ready(function() {
     $.ajax({
       type: 'POST',
       url: $('form.deploy-form').attr('action'),
-      data: JSON.stringify({ app: $('select option:selected').text() }, null, '\t'),
+      data: JSON.stringify({ app: $('select option:selected').data('alternative') }, null, '\t'),
       contentType: 'application/json;charset=UTF-8',
       success: function(data, status) {
         showMessageDeployFinished();
