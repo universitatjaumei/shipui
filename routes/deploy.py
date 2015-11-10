@@ -22,10 +22,7 @@ apps_conf.save_todisk()
 deploy_app = flask.Blueprint("deploy_app", __name__, template_folder="../templates")
 
 def get_app_acronyms(apps_conf):
-    apps = [ app.upper() for app in apps_conf.get().keys() ]
-    apps.sort()
-    return apps
-
+    return apps_conf.get_applications()
 
 @deploy_app.route("/deploy", methods=["GET"])
 def index():
