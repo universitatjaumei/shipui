@@ -11,9 +11,9 @@ import flask_lsm_auth
 import StringIO
 import time
 from ship.logger import ShipLogger
+from commons.log_emitter import LogEmitter
 
 app = flask.Flask("shipui")
-app.config['SECRET_KEY'] = 'secretor!!#!'
 
 app.register_blueprint(deploy_app)
 app.register_blueprint(conf_app)
@@ -30,7 +30,6 @@ def logout():
     lsm.logout(flask.request.url_root)
 
     return lsm.compose_response()
-
 
 @app.after_request
 def after_request(res):
