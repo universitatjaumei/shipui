@@ -1,2 +1,4 @@
 flask
+flask-socketio==1.0
 requests
+gevent
