@@ -110,7 +110,6 @@ a {
     width: 100%;
     background: #EFEFEF;
     opacity: 0.5;
-    display: none;
 }
 
 .deploying-message {

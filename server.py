@@ -1,9 +1,10 @@
+# Parcheamos las funciones bloqueantes para hacerlas compatibles con websockets
+from gevent import monkey
+monkey.patch_all()
+
 import flask
 import threading
-<<<<<<< HEAD
-=======
 from flask.ext.socketio import SocketIO, emit
->>>>>>> Utilizamos Flask-SocketIO para arrancar el proyecto
 from routes.deploy import deploy_app
 from routes.configuration import conf_app
 from routes.properties import properties_app
@@ -51,9 +52,10 @@ def deploy_connect():
     stream = ShipLogger.get_memory_stream()
     stream.truncate(0)
 
-@socketio.on('received event', namespace='/deploy')
-def deploy_received(data):
-    print data
+@socketio.on('clear-log', namespace='/deploy')
+def deploy_clear_log(data):
+    stream = ShipLogger.get_memory_stream()
+    stream.truncate(0)
 
 @socketio.on('disconnect', namespace='/deploy')
 def deploy_disconnect():
