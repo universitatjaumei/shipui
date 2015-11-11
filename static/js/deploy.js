@@ -1,12 +1,18 @@
+var socket = io.connect('http://' + document.domain + ':' + location.port + '/deploy');
+
 function showMessageDeploying() {
+  socket.emit('clear-log', {});
+
   $('.deploying-message').show();
   $('.deploying-message').removeClass('success');
   $('.deploying-message .spinner').show();
   $('.deploying-message .sk-folding-cube').hide();
   $('.deploying-message .title').html('Deploying...');
 
+  $('.log').html('');
   $('.log').css('opacity', '1.0');
   $('.log').css('border', '1px solid #AAA');
+
 }
 
 function showMessageDeployFinished() {
@@ -35,9 +41,6 @@ $(document).ready(function() {
     return false;
   });
 
-  return;
-
-  var socket = io.connect('http://' + document.domain + ':' + location.port + '/deploy');
   socket.on('disconnect', function() {
     console.log('disonnected');
   });
