@@ -3,10 +3,11 @@ var socket = io.connect('http://' + document.domain + ':' + location.port + '/de
 function showMessageDeploying() {
   socket.emit('clear-log', {});
 
+  $('.log').show();
   $('.deploying-message').show();
   $('.deploying-message').removeClass('success');
   $('.deploying-message .spinner').show();
-  $('.deploying-message .sk-folding-cube').hide();
+  $('.deploying-message .checkok').hide();
   $('.deploying-message .title').html('Deploying...');
 
   $('.log').html('');
@@ -18,7 +19,7 @@ function showMessageDeploying() {
 function showMessageDeployFinished() {
   $('.deploying-message').addClass('success');
   $('.deploying-message .spinner').hide();
-  $('.deploying-message .sk-folding-cube').show();
+  $('.deploying-message .checkok').show();
   $('.deploying-message .title').html('Done!');
 }
 
@@ -31,7 +32,9 @@ $(document).ready(function() {
     $.ajax({
       type: 'POST',
       url: $('form.deploy-form').attr('action'),
-      data: JSON.stringify({ app: $('select option:selected').data('alternative') }, null, '\t'),
+      data: JSON.stringify({ app: $('select option:selected').val(),
+                             path: $('select option:selected').data('alternative'),
+                            }, null, '\t'),
       contentType: 'application/json;charset=UTF-8',
       success: function(data, status) {
         showMessageDeployFinished();
