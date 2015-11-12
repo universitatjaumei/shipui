@@ -39,6 +39,11 @@ def create_app_properties_file(app):
 @deploy_app.route("/deploy", methods=["POST"])
 def deploy():
     project_name = flask.request.json["app"].lower()
+    path = flask.request.json["path"].lower()
+
+    logger = logging.getLogger('werkzeug')
+    logger.error(path)
+
     create_app_properties_file(project_name)
     logger = logging.getLogger("werkzeug")
 
@@ -52,7 +57,7 @@ def deploy():
         workdir = shipui_conf.get("workdir")
         svnurl = shipui_conf.get("svnurl")
         version = shipui_conf.get("version")
-        svn_web_repository = svnurl % (project_name.upper(), conf.get("project"))
+        svn_web_repository = svnurl % (path.upper(), conf.get("project"))
 
         try:
             project = ProjectBuilder(workdir, project_name, "/etc/uji/%s/app.properties" % project_name) \

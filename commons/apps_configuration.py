@@ -12,6 +12,13 @@ class AppsConfiguration:
 
         return yaml.load(yaml_content)
 
+    def getByPath(self, path):
+        config = self.get()
+
+        for key in config.keys():
+            if config[key].get("path") == path:
+                return config[key]
+
     def get_applications(self):
         config = self.get()
         result = []
