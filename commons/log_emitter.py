@@ -18,8 +18,6 @@ class LogEmitter(threading.Thread):
             stream = ShipLogger.get_memory_stream()
             logger = ShipLogger()
 
-            logger.info("hola " + str(time.time()))
-
             while not self._stopevent.isSet( ):
                 print self._stopevent.isSet()
                 line = stream.getvalue()
