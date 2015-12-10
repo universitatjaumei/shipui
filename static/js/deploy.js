@@ -34,8 +34,6 @@ function fillProjectBranches(project) {
     for (var i in tags) {
       tagsSelect.append('<option value="' + tags[i] + '">' + tags[i] + '</option>');
     }
-
-    console.log(data);
   });
 }
 
