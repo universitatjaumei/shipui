@@ -53,8 +53,6 @@
             $("#update-config").click(function (e) {
                 var app = $("#apps").val();
 
-                console.log(app);
-
                 $.ajax({
                     url: "/conf/" + app,
                     method: "PUT",
@@ -63,6 +61,9 @@
                     },
                     success: function (data) {
                         $("textarea[name='props']").val(data);
+                    },
+                    error: function(xhr, status, err) {
+                      window.alert(err);
                     }
                 });
             });
