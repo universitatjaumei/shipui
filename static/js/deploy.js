@@ -23,6 +23,26 @@ function showMessageDeployFinished() {
   $('.deploying-message .title').html('Done!');
 }
 
+function fillProjectBranches(projectID) {
+  $.get('/deploy/branches', { projectID: projectID }, function(data, status) {
+    var branches = data.branches;
+    $('select[name="branch"]').show();
+
+    var branchesSelect = $('select[name="branch"]');
+    branchesSelect.empty();
+    branchesSelect.append('<option value="trunk">trunk</option>');
+    for (var i in branches) {
+      branchesSelect.append('<option value="' + branches[i] + '">' + branches[i] + '</option>');
+    }
+
+    console.log(data);
+  });
+}
+
+function getSelectedProject() {
+  return $('select[name="app"] option:selected').val();
+}
+
 $(document).ready(function() {
 
   $('form button').click(function() {
@@ -32,8 +52,8 @@ $(document).ready(function() {
     $.ajax({
       type: 'POST',
       url: $('form.deploy-form').attr('action'),
-      data: JSON.stringify({ app: $('select option:selected').val(),
-                             path: $('select option:selected').data('alternative'),
+      data: JSON.stringify({ app: $('select[name=app] option:selected').val(),
+                             path: $('select[name=app] option:selected').data('alternative'),
                             }, null, '\t'),
       contentType: 'application/json;charset=UTF-8',
       success: function(data, status) {
@@ -42,6 +62,12 @@ $(document).ready(function() {
     });
 
     return false;
+  });
+
+  fillProjectBranches(getSelectedProject());
+
+  $('select[name=app]').change(function() {
+    console.log('hola');
   });
 
   socket.on('disconnect', function() {
