@@ -23,16 +23,16 @@ function showMessageDeployFinished() {
   $('.deploying-message .title').html('Done!');
 }
 
-function fillProjectBranches(projectID) {
-  $.get('/deploy/branches', { projectID: projectID }, function(data, status) {
-    var branches = data.branches;
-    $('select[name="branch"]').show();
+function fillProjectBranches(project) {
+  $.get('/deploy/tags', project, function(data, status) {
+    var tags = data.tags;
+    $('select[name="tag"]').show();
 
-    var branchesSelect = $('select[name="branch"]');
-    branchesSelect.empty();
-    branchesSelect.append('<option value="trunk">trunk</option>');
-    for (var i in branches) {
-      branchesSelect.append('<option value="' + branches[i] + '">' + branches[i] + '</option>');
+    var tagsSelect = $('select[name="tag"]');
+    tagsSelect.empty();
+    tagsSelect.append('<option value="trunk">trunk</option>');
+    for (var i in tags) {
+      tagsSelect.append('<option value="' + tags[i] + '">' + tags[i] + '</option>');
     }
 
     console.log(data);
@@ -40,7 +40,10 @@ function fillProjectBranches(projectID) {
 }
 
 function getSelectedProject() {
-  return $('select[name="app"] option:selected').val();
+  return {
+    app:  $('select[name="app"] option:selected').val(),
+    path: $('select[name="app"] option:selected').data('alternative'),
+  };
 }
 
 $(document).ready(function() {
@@ -52,9 +55,7 @@ $(document).ready(function() {
     $.ajax({
       type: 'POST',
       url: $('form.deploy-form').attr('action'),
-      data: JSON.stringify({ app: $('select[name=app] option:selected').val(),
-                             path: $('select[name=app] option:selected').data('alternative'),
-                            }, null, '\t'),
+      data: JSON.stringify(getSelectedProject(), null, '\t'),
       contentType: 'application/json;charset=UTF-8',
       success: function(data, status) {
         showMessageDeployFinished();
@@ -67,7 +68,7 @@ $(document).ready(function() {
   fillProjectBranches(getSelectedProject());
 
   $('select[name=app]').change(function() {
-    console.log('hola');
+    fillProjectBranches(getSelectedProject());
   });
 
   socket.on('disconnect', function() {

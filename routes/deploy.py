@@ -8,6 +8,7 @@ except Exception as e:
 import traceback
 import flask
 from ship.project import ProjectBuilder
+from ship.subversion import Subversion
 from ship.validator import *
 from ship.errors import SVNException, ProjectIdNotFoundException
 from commons.apps_configuration import AppsConfiguration
@@ -35,6 +36,21 @@ def index():
 def create_app_properties_file(app):
     app_properties = AppsProperties(app)
     app_properties.save_todisk()
+
+@deploy_app.route("/deploy/tags", methods=["GET"])
+def get_tags():
+    project_name = flask.request.args["app"].lower()
+    path = flask.request.args["path"].lower()
+    tags = []
+
+    if project_name and path:
+        conf = apps_conf.get().get(project_name.lower())
+        svnurl = shipui_conf.get("svnurl")
+        svn_web_repository = svnurl % (path.upper(), conf.get("project"))
+        repo = Subversion(svn_web_repository, "/tmp", project_name)
+        tags = repo.get_tags()
+
+    return flask.jsonify({ "tags": tags })
 
 @deploy_app.route("/deploy", methods=["POST"])
 def deploy():
