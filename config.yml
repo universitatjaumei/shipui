@@ -2,5 +2,4 @@ deploy:
     svnurl: http://jira.uji.es/repos/uji/%s/%s
     etcd_environment_url:  http://conf.uji.es/v2/keys/ujiapps/apps/all.yaml
     etcd_app_properties_url: http://conf.uji.es/v2/keys/ujiapps/apps/%s/app.properties
-    version: trunk
     workdir: /tmp/shipui

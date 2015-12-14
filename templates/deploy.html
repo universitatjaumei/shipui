@@ -18,7 +18,7 @@
                 <option value="{{ app.name }}" data-alternative="{{ app.alternative }}">{{ app.name }}</option>
                 {% endfor %}
             </select>
-            <select name="tag">
+            <select name="version">
             </select>
             <button>Submit</button>
         </form>
@@ -28,6 +28,8 @@
               <div class="double-bounce2"></div>
           </div>
           <img class="checkok" src="static/img/check.png" />
+          <img class="error" src="static/img/error.png" />
+
           <div class="title">Deploying...</div>
         </div>
 
