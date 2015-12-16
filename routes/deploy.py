@@ -81,8 +81,7 @@ def deploy():
                 .with_tomcat( { "start_tomcat_after_deploy" : True }) \
                 .with_validation_rules(rules) \
                 .build()
-                #.build() \
-                #.deploy()
+                .deploy()
         except SystemExit as e:
             message = traceback.format_exc()
             logger.error(message)
