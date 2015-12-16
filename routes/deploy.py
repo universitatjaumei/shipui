@@ -80,7 +80,7 @@ def deploy():
                 .with_maven() \
                 .with_tomcat( { "start_tomcat_after_deploy" : True }) \
                 .with_validation_rules(rules) \
-                .build()
+                .build() \
                 .deploy()
         except SystemExit as e:
             message = traceback.format_exc()
