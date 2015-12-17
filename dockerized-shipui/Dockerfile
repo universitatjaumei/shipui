@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 FROM buildpack-deps:jessie-scm
 MAINTAINER Ricardo Borillo <borillo@gmail.com>
 MAINTAINER David Rubert <david.rubert@gmail.com>
