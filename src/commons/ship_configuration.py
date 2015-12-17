@@ -1,8 +1,9 @@
 import yaml
+import os
 
 class ShipUIConfig:
     def __init__(self):
-        f = open("config.yml")
+        f = open(os.path.dirname(os.path.realpath(__file__)) + "/../config.yml")
         data = yaml.safe_load(f)
         self.data = data.get("deploy")
         f.close()

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 FROM buildpack-deps:jessie-scm
 MAINTAINER Ricardo Borillo <borillo@gmail.com>
 MAINTAINER David Rubert <david.rubert@gmail.com>
@@ -11,14 +10,13 @@ RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 RUN easy_install pip
 
 # Install requirements.txt
-ADD requirements.txt /tmp/requirements.txt
+COPY requirements.txt /tmp/requirements.txt
 RUN pip install -r /tmp/requirements.txt
 
+COPY /src /src
+
 EXPOSE 5000
+VOLUME ["/root"]
 
-VOLUME ["/root/.ssh"]
-VOLUME ["/root/.subversion"]
-VOLUME ["/root/.m2"]
-
-WORKDIR /src
-ENTRYPOINT ["python", "/src/server.py"]
+WORKDIR src
+ENTRYPOINT ["python", "server.py"]
