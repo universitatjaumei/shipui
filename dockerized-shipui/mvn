@@ -1,3 +1,0 @@
-#!/bin/bash
-
-JAVA_HOME=/opt/jdk1.8.0_45/ /opt/apache-maven-3.3.3/bin/mvn $*
