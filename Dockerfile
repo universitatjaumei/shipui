@@ -1,4 +1,4 @@
-FROM buildpack-deps:jessie-scm
+FROM java:8-jdk
 MAINTAINER Ricardo Borillo <borillo@gmail.com>
 MAINTAINER David Rubert <david.rubert@gmail.com>
 
