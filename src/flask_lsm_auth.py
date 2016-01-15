@@ -136,8 +136,8 @@ class LSM:
         idx = self._get_response_cookie(self.idx_cookie_name)
 
         if not idx:
-            self.logout(url)
-            return
+            for cookie_name in (self.session_cookie_name, self.passkey_cookie_name, self.idx_cookie_name):
+                self._set_cookie(cookie_name, "", 0)
             #flask.abort(500)
 
         redirect_url = self.sso_url + "?Url=" + urllib.quote_plus(url) + "&lang=" + self._lsm_get_lang() + "&ident=" + self.domain + "&dimitri=" + idx
