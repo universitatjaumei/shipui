@@ -4,6 +4,7 @@ import urllib
 import base64
 import logging
 import yaml
+import os
 from urlparse import urlparse, parse_qs, urlunparse
 
 
@@ -19,7 +20,7 @@ class LSM:
 
         self.logger = logging.getLogger("werkzeug")
 
-        self.domain = "haddock.si.uji.es"
+        self.domain = self._get_webserver_hostname()
 
         # Urls
         # SSO path (xmlrpc and web).
