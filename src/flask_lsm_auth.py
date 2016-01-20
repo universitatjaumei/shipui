@@ -3,10 +3,17 @@ import xmlrpclib
 import urllib
 import base64
 import logging
+import yaml
 from urlparse import urlparse, parse_qs, urlunparse
 
 
 class LSM:
+
+    def _get_webserver_hostname(self):
+        f = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "config.yml"))
+        data = yaml.safe_load(f)
+        f.close()
+        return data.get("webserver").get("host")
 
     def __init__(self):
 
