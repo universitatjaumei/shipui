@@ -66,7 +66,7 @@ def deploy():
     try:
         logger.info("Initializing project construction")
 
-        rules = [ ConfigFileValidationRule, ConsoleLogValidationRule,
+        rules = [ ConfigFileValidationRule,
                   PomXMLValidationRule, CompiledPackageExistsValidationRule ]
 
         conf = apps_conf.get().get(project_name.lower())
