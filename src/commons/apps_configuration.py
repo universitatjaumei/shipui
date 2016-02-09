@@ -34,10 +34,10 @@ class AppsConfiguration:
         return result
 
     def serialize_app(self, app):
-        return yaml.dump(self.get()[app], default_flow_style=False)
+        return yaml.safe_dump(self.get()[app], default_flow_style=False)
 
     def save(self, conf):
-        data = yaml.dump(conf, default_flow_style=False)
+        data = yaml.safe_dump(conf, default_flow_style=False)
         requests.put(self.url, data={"value": data})
 
     def save_app(self, app, data):
@@ -49,7 +49,7 @@ class AppsConfiguration:
 
     def save_todisk(self):
         with open("environment.yml", "w+") as yaml_file:
-            yaml_file.write(yaml.dump(self.get(), default_flow_style=False))
+            yaml_file.write(yaml.safe_dump(self.get(), default_flow_style=False))
 
     def get_next_port_offset(self, conf):
         next_port_offset = 0

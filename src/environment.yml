@@ -1,0 +1,618 @@
+ade:
+  java: 8
+  project: uji-ade
+  tomcat:
+    admin:
+      password: infrapod136
+      username: tomcat
+    base: /mnt/data/aplicacions/server/tomcat
+    connection:
+      host: apexp01.uji.es
+      port: 22
+      type: ssh
+      username: aplicacions
+    memory: 198
+    ports:
+      ajp: 6116
+      http: 8116
+      jmx: 9616
+      redirect: 9116
+      shutdown: 7116
+    version: 8.0.22
+apa:
+  java: 8
+  project: uji-apa-base
+  tomcat:
+    admin:
+      password: infrapod136
+      username: tomcat
+    base: /mnt/data/aplicacions/server/tomcat
+    connection:
+      host: apexp01.uji.es
+      port: 22
+      type: ssh
+      username: aplicacions
+    memory: 198
+    ports:
+      ajp: 6101
+      http: 8101
+      jmx: 9601
+      redirect: 9101
+      shutdown: 7101
+    version: 8.0.22
+bec:
+  java: 8
+  path: becas
+  project: uji-bec-base
+  tomcat:
+    admin:
+      password: infrapod136
+      username: tomcat
+    base: /mnt/data/aplicacions/server/tomcat
+    connection:
+      host: apexp01.uji.es
+      port: 22
+      type: ssh
+      username: aplicacions
+    memory: 198
+    ports:
+      ajp: 6119
+      http: 8119
+      jmx: 9619
+      redirect: 9119
+      shutdown: 7119
+    version: 8.0.22
+cau:
+  java: 8
+  project: uji-cau
+  tomcat:
+    admin:
+      password: infrapod136
+      username: tomcat
+    base: /mnt/data/aplicacions/server/tomcat
+    connection:
+      host: apexp01.uji.es
+      port: 22
+      type: ssh
+      username: aplicacions
+    memory: 198
+    ports:
+      ajp: 6104
+      http: 8104
+      jmx: 9604
+      redirect: 9104
+      shutdown: 7104
+    version: 8.0.22
+ceo:
+  java: 8
+  project: uji-ceo-base
+  tomcat:
+    admin:
+      password: infrapod136
+      username: tomcat
+    base: /mnt/data/aplicacions/server/tomcat
+    connection:
+      host: apexp02.uji.es
+      port: 22
+      type: ssh
+      username: aplicacions
+    memory: 198
+    ports:
+      ajp: 6107
+      http: 8107
+      jmx: 9607
+      redirect: 9107
+      shutdown: 7107
+    version: 8.0.22
+cpr:
+  java: 8
+  project: uji-cpr
+  service:
+    base: /mnt/data/aplicacions/cron
+    connection:
+      host: infra01.uji.es
+      port: 22
+      type: ssh
+      username: aplicacions
+  tomcat:
+    admin:
+      password: infrapod136
+      username: tomcat
+    base: /mnt/data/aplicacions/server/tomcat
+    connection:
+      host: apexp01.uji.es
+      port: 22
+      type: ssh
+      username: aplicacions
+    memory: 198
+    ports:
+      ajp: 6105
+      http: 8105
+      jmx: 9605
+      redirect: 9105
+      shutdown: 7105
+    version: 8.0.22
+crm:
+  java: 8
+  project: uji-crm-base
+  tomcat:
+    admin:
+      password: infrapod136
+      username: tomcat
+    base: /mnt/data/aplicacions/server/tomcat
+    connection:
+      host: apexp02.uji.es
+      port: 22
+      type: ssh
+      username: aplicacions
+    memory: 198
+    ports:
+      ajp: 6108
+      http: 8108
+      jmx: 9608
+      redirect: 9108
+      shutdown: 7108
+    version: 8.0.22
+cvn:
+  java: 8
+  project: uji-cvn
+  tomcat:
+    admin:
+      password: infrapod136
+      username: tomcat
+    base: /mnt/data/aplicacions/server/tomcat
+    connection:
+      host: apexp02.uji.es
+      port: 22
+      type: ssh
+      username: aplicacions
+    memory: 198
+    ports:
+      ajp: 6114
+      http: 8114
+      jmx: 9614
+      redirect: 9114
+      shutdown: 7114
+    version: 8.0.22
+gdo:
+  java: 8
+  project: uji-gdo-base
+  tomcat:
+    admin:
+      password: infrapod136
+      username: tomcat
+    base: /mnt/data/aplicacions/server/tomcat
+    connection:
+      host: apexp02.uji.es
+      port: 22
+      type: ssh
+      username: aplicacions
+    memory: 198
+    ports:
+      ajp: 6111
+      http: 8111
+      jmx: 9611
+      redirect: 9111
+      shutdown: 7111
+    version: 8.0.22
+gei:
+  java: 8
+  project: uji-gei-base
+  tomcat:
+    admin:
+      password: infrapod136
+      username: tomcat
+    base: /mnt/data/aplicacions/server/tomcat
+    connection:
+      host: apexp02.uji.es
+      port: 22
+      type: ssh
+      username: aplicacions
+    memory: 198
+    ports:
+      ajp: 6112
+      http: 8112
+      jmx: 9612
+      redirect: 9112
+      shutdown: 7112
+    version: 8.0.22
+google-calendar:
+  java: 8
+  project: uji-google-calendar
+  tomcat:
+    admin:
+      password: infrapod136
+      username: tomcat
+    base: /mnt/data/aplicacions/server/tomcat
+    connection:
+      host: apexp02.uji.es
+      port: 22
+      type: ssh
+      username: aplicacions
+    memory: 198
+    ports:
+      ajp: 6128
+      http: 8128
+      jmx: 9628
+      redirect: 9128
+      shutdown: 7128
+    version: 8.0.22
+hor:
+  java: 8
+  project: uji-hor-base
+  tomcat:
+    admin:
+      password: infrapod136
+      username: tomcat
+    base: /mnt/data/aplicacions/server/tomcat
+    connection:
+      host: apexp02.uji.es
+      port: 22
+      type: ssh
+      username: aplicacions
+    memory: 198
+    ports:
+      ajp: 6106
+      http: 8106
+      jmx: 9606
+      redirect: 9106
+      shutdown: 7106
+    version: 8.0.22
+ici:
+  java: 8
+  project: uji-ici-base
+  tomcat:
+    admin:
+      password: infrapod136
+      username: tomcat
+    base: /mnt/data/aplicacions/server/tomcat
+    connection:
+      host: apexp02.uji.es
+      port: 22
+      type: ssh
+      username: aplicacions
+    memory: 198
+    ports:
+      ajp: 6127
+      http: 8127
+      jmx: 9627
+      redirect: 9127
+      shutdown: 7127
+    version: 8.0.22
+ind:
+  java: 8
+  project: uji-ind-base
+  tomcat:
+    admin:
+      password: infrapod136
+      username: tomcat
+    base: /mnt/data/aplicacions/server/tomcat
+    connection:
+      host: apexp01.uji.es
+      port: 22
+      type: ssh
+      username: aplicacions
+    memory: 198
+    ports:
+      ajp: 6103
+      http: 8103
+      jmx: 9603
+      redirect: 9103
+      shutdown: 7103
+    version: 8.0.22
+lib:
+  java: 8
+  project: uji-lib-base
+  tomcat:
+    admin:
+      password: infrapod136
+      username: tomcat
+    base: /mnt/data/aplicacions/server/tomcat
+    connection:
+      host: apexp02.uji.es
+      port: 22
+      type: ssh
+      username: aplicacions
+    memory: 198
+    ports:
+      ajp: 6120
+      http: 8120
+      jmx: 9620
+      redirect: 9120
+      shutdown: 7120
+    version: 8.0.22
+lod:
+  java: 8
+  project: uji-lod
+  tomcat:
+    admin:
+      password: infrapod136
+      username: tomcat
+    base: /mnt/data/aplicacions/server/tomcat
+    connection:
+      host: apexp02.uji.es
+      port: 22
+      type: ssh
+      username: aplicacions
+    memory: 198
+    ports:
+      ajp: 6109
+      http: 8109
+      jmx: 9609
+      redirect: 9109
+      shutdown: 7109
+    version: 8.0.22
+lsm:
+  java: 8
+  project: uji-lsm-base
+  tomcat:
+    admin:
+      password: infrapod136
+      username: tomcat
+    base: /mnt/data/aplicacions/server/tomcat
+    connection:
+      host: apexp02.uji.es
+      port: 22
+      type: ssh
+      username: aplicacions
+    memory: 198
+    ports:
+      ajp: 6125
+      http: 8125
+      jmx: 9625
+      redirect: 9125
+      shutdown: 7125
+    version: 8.0.22
+menc:
+  java: 8
+  project: uji-menc-base
+  tomcat:
+    admin:
+      password: infrapod136
+      username: tomcat
+    base: /mnt/data/aplicacions/server/tomcat
+    connection:
+      host: apexp02.uji.es
+      port: 22
+      type: ssh
+      username: aplicacions
+    memory: 198
+    ports:
+      ajp: 6122
+      http: 8122
+      jmx: 9622
+      redirect: 9122
+      shutdown: 7122
+    version: 8.0.22
+msj:
+  java: 8
+  project: uji-msj
+  tomcat:
+    admin:
+      password: infrapod136
+      username: tomcat
+    base: /mnt/data/aplicacions/server/tomcat
+    connection:
+      host: apexp02.uji.es
+      port: 22
+      type: ssh
+      username: aplicacions
+    memory: 198
+    ports:
+      ajp: 6123
+      http: 8123
+      jmx: 9623
+      redirect: 9123
+      shutdown: 7123
+    version: 8.0.22
+ocw:
+  java: 8
+  project: uji-ocw-base
+  tomcat:
+    admin:
+      password: infrapod136
+      username: tomcat
+    base: /mnt/data/aplicacions/server/tomcat
+    connection:
+      host: apexp02.uji.es
+      port: 22
+      type: ssh
+      username: aplicacions
+    memory: 198
+    ports:
+      ajp: 6110
+      http: 8110
+      jmx: 9610
+      redirect: 9110
+      shutdown: 7110
+    version: 8.0.22
+pea:
+  java: 8
+  project: uji-pea-base
+  tomcat:
+    admin:
+      password: infrapod136
+      username: tomcat
+    base: /mnt/data/aplicacions/server/tomcat
+    connection:
+      host: apexp02.uji.es
+      port: 22
+      type: ssh
+      username: aplicacions
+    memory: 198
+    ports:
+      ajp: 6113
+      http: 8113
+      jmx: 9613
+      redirect: 9113
+      shutdown: 7113
+    version: 8.0.22
+reg:
+  java: 8
+  project: uji-reg-base
+  tomcat:
+    admin:
+      password: infrapod136
+      username: tomcat
+    base: /mnt/data/aplicacions/server/tomcat
+    connection:
+      host: apexp02.uji.es
+      port: 22
+      type: ssh
+      username: aplicacions
+    memory: 198
+    ports:
+      ajp: 6121
+      http: 8121
+      jmx: 9621
+      redirect: 9121
+      shutdown: 7121
+    version: 8.0.22
+sal:
+  java: 8
+  project: uji-sal-base
+  tomcat:
+    admin:
+      password: infrapod136
+      username: tomcat
+    base: /mnt/data/aplicacions/server/tomcat
+    connection:
+      host: apexp02.uji.es
+      port: 22
+      type: ssh
+      username: aplicacions
+    memory: 198
+    ports:
+      ajp: 6124
+      http: 8124
+      jmx: 9624
+      redirect: 9124
+      shutdown: 7124
+    version: 8.0.22
+sin:
+  java: 8
+  project: uji-sin-base
+  tomcat:
+    admin:
+      password: infrapod136
+      username: tomcat
+    base: /mnt/data/aplicacions/server/tomcat
+    connection:
+      host: apexp02.uji.es
+      port: 22
+      type: ssh
+      username: aplicacions
+    memory: 198
+    ports:
+      ajp: 6126
+      http: 8126
+      jmx: 9626
+      redirect: 9126
+      shutdown: 7126
+    version: 8.0.22
+spi:
+  java: 8
+  project: uji-spi-base
+  tomcat:
+    admin:
+      password: infrapod136
+      username: tomcat
+    base: /mnt/data/aplicacions/server/tomcat
+    connection:
+      host: apexp02.uji.es
+      port: 22
+      type: ssh
+      username: aplicacions
+    memory: 198
+    ports:
+      ajp: 6118
+      http: 8118
+      jmx: 9618
+      redirect: 9118
+      shutdown: 7118
+    version: 8.0.22
+srv-sso:
+  java: 8
+  path: srv
+  project: uji-srv-sso
+  tomcat:
+    admin:
+      password: infrapod136
+      username: tomcat
+    base: /mnt/data/aplicacions/server/tomcat
+    connection:
+      host: apexp01.uji.es
+      port: 22
+      type: ssh
+      username: aplicacions
+    memory: 198
+    ports:
+      ajp: 6129
+      http: 8129
+      jmx: 9629
+      redirect: 9129
+      shutdown: 7129
+    version: 8.0.22
+sus:
+  java: 8
+  project: uji-sus-base
+  tomcat:
+    admin:
+      password: infrapod136
+      username: tomcat
+    base: /mnt/data/aplicacions/server/tomcat
+    connection:
+      host: apexp02.uji.es
+      port: 22
+      type: ssh
+      username: aplicacions
+    memory: 198
+    ports:
+      ajp: 6117
+      http: 8117
+      jmx: 9617
+      redirect: 9117
+      shutdown: 7117
+    version: 8.0.22
+upo:
+  java: 8
+  project: uji-upo-base
+  tomcat:
+    admin:
+      password: infrapod136
+      username: tomcat
+    base: /mnt/data/aplicacions/server/tomcat
+    connection:
+      host: apexp01.uji.es
+      port: 22
+      type: ssh
+      username: aplicacions
+    memory: 198
+    ports:
+      ajp: 6102
+      http: 8102
+      jmx: 9602
+      redirect: 9102
+      shutdown: 7102
+    version: 8.0.22
+ver:
+  java: 8
+  project: uji-ver-base
+  tomcat:
+    admin:
+      password: infrapod136
+      username: tomcat
+    base: /mnt/data/aplicacions/server/tomcat
+    connection:
+      host: apexp02.uji.es
+      port: 22
+      type: ssh
+      username: aplicacions
+    memory: 198
+    ports:
+      ajp: 6115
+      http: 8115
+      jmx: 9615
+      redirect: 9115
+      shutdown: 7115
+    version: 8.0.22
