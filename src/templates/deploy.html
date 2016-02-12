@@ -12,7 +12,7 @@
         <h2>Select the project to deploy and press "Submit"</h2>
     </div>
     <div class="content">
-        <form class="deploy-form" action="/deploy" method="POST" >
+        <form class="deploy-form" action="/deploy/" method="POST" >
             <select name="app">
                 {% for app in apps %}
                 <option value="{{ app.name }}" data-alternative="{{ app.alternative }}">{{ app.name }}</option>
@@ -27,8 +27,8 @@
               <div class="double-bounce1"></div>
               <div class="double-bounce2"></div>
           </div>
-          <img class="checkok" src="static/img/check.png" />
-          <img class="error" src="static/img/error.png" />
+          <img class="checkok" src="/static/img/check.png" />
+          <img class="error" src="/static/img/error.png" />
 
           <div class="title">Deploying...</div>
         </div>

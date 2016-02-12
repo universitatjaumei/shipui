@@ -426,6 +426,28 @@ ocw:
       redirect: 9110
       shutdown: 7110
     version: 8.0.22
+pci:
+  java: 8
+  path: oct
+  project: uji-pci-base
+  tomcat:
+    admin:
+      password: infrapod136
+      username: tomcat
+    base: /mnt/data/aplicacions/server/tomcat
+    connection:
+      host: apexp01.uji.es
+      port: 22
+      type: ssh
+      username: aplicacions
+    memory: 198
+    ports:
+      ajp: 6130
+      http: 8130
+      jmx: 9630
+      redirect: 9130
+      shutdown: 7130
+    version: 8.0.22
 pea:
   java: 8
   project: uji-pea-base

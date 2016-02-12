@@ -8,23 +8,29 @@ from flask.ext.socketio import SocketIO, emit
 from routes.deploy import deploy_app
 from routes.configuration import conf_app
 from routes.properties import properties_app
+from routes.api import api_app
+from commons.config import Config
+from commons.flask_lsm_auth import LSM
 import logging
 import sys
 import io
 import time
-import flask_lsm_auth
 import StringIO
 import time
 from ship.logger import ShipLogger
 from commons.log_emitter import LogEmitter
 
+config = Config()
+webserver_config = config.get('webserver')
 app = flask.Flask("shipui")
-app.config['SECRET_KEY'] = 'secretor!!#!'
+app.config['SECRET_KEY'] = webserver_config.get('websockets_secret_key')
 socketio = SocketIO(app)
+lsm = LSM(webserver_config)
 
-app.register_blueprint(deploy_app)
-app.register_blueprint(conf_app)
-app.register_blueprint(properties_app)
+app.register_blueprint(api_app, url_prefix='/api')
+app.register_blueprint(deploy_app, url_prefix='/deploy')
+app.register_blueprint(conf_app, url_prefix='/conf')
+app.register_blueprint(properties_app, url_prefix='/properties')
 
 @app.route("/", methods=["GET"])
 def index():
@@ -33,14 +39,15 @@ def index():
 
 @app.route("/logout", methods=["GET"])
 def logout():
-    lsm = flask_lsm_auth.LSM()
     lsm.logout(flask.request.url_root)
-
     return lsm.compose_response()
+
+@app.before_request
+def before_request():
+    flask.g.user = lsm.get_login()
 
 @app.after_request
 def after_request(res):
-    lsm = flask_lsm_auth.LSM()
     if not lsm.get_login():
         lsm.login()
 

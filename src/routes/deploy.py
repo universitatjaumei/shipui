@@ -13,12 +13,12 @@ from ship.validator import *
 from ship.errors import SVNException, ProjectIdNotFoundException
 from commons.apps_configuration import AppsConfiguration
 from commons.apps_properties import AppsProperties
-from commons.ship_configuration import ShipUIConfig
-import flask_lsm_auth
+from commons.config import Config
 from flask import jsonify
 
-shipui_conf = ShipUIConfig()
-apps_conf = AppsConfiguration(shipui_conf.get("etcd_environment_url"))
+config = Config()
+deploy_config = config.get('deploy')
+apps_conf = AppsConfiguration(deploy_config.get("etcd_environment_url"))
 apps_conf.save_todisk()
 
 deploy_app = flask.Blueprint("deploy_app", __name__, template_folder="../templates")
@@ -26,19 +26,17 @@ deploy_app = flask.Blueprint("deploy_app", __name__, template_folder="../templat
 def get_app_acronyms(apps_conf):
     return apps_conf.get_applications()
 
-@deploy_app.route("/deploy", methods=["GET"])
+@deploy_app.route("/", methods=["GET"])
 def index():
     apps = get_app_acronyms(apps_conf)
-    lsm = flask_lsm_auth.LSM()
-
-    return flask.render_template("deploy.html", section="deploy", apps=apps, user=lsm.get_login())
+    return flask.render_template("deploy.html", section="deploy", apps=apps, user=flask.g.user)
 
 
 def create_app_properties_file(app):
     app_properties = AppsProperties(app)
     app_properties.save_todisk()
 
-@deploy_app.route("/deploy/versions", methods=["GET"])
+@deploy_app.route("/versions", methods=["GET"])
 def get_versions():
     project_name = flask.request.args["app"].lower()
     path = flask.request.args["path"].lower()
@@ -46,14 +44,14 @@ def get_versions():
 
     if project_name and path:
         conf = apps_conf.get().get(project_name.lower())
-        svnurl = shipui_conf.get("svnurl")
+        svnurl = deploy_config.get("svnurl")
         svn_web_repository = svnurl % (path.upper(), conf.get("project"))
         repo = Subversion(svn_web_repository, "/tmp", project_name)
         versions = repo.get_tags()
 
     return flask.jsonify({ "versions": versions })
 
-@deploy_app.route("/deploy", methods=["POST"])
+@deploy_app.route("/", methods=["POST"])
 def deploy():
     project_name = flask.request.json["app"].lower()
     path = flask.request.json["path"].lower()
@@ -70,8 +68,8 @@ def deploy():
                   PomXMLValidationRule, CompiledPackageExistsValidationRule ]
 
         conf = apps_conf.get().get(project_name.lower())
-        workdir = shipui_conf.get("workdir")
-        svnurl = shipui_conf.get("svnurl")
+        workdir = deploy_config.get("workdir")
+        svnurl = deploy_config.get("svnurl")
         svn_web_repository = svnurl % (path.upper(), conf.get("project"))
 
         try:

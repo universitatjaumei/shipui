@@ -1,7 +1,14 @@
-webserver:
-    host: haddock.si.uji.es
-deploy:
-    svnurl: http://jira.uji.es/repos/uji/%s/%s
-    etcd_environment_url:  http://conf.uji.es/v2/keys/ujiapps/apps/all.yaml
-    etcd_app_properties_url: http://conf.uji.es/v2/keys/ujiapps/apps/%s/app.properties
-    workdir: /tmp/shipui
+shipui:
+  webserver:
+    domain: haddock.si.uji.es
+    websockets_secret_key: secretor!!#!
+    port: 5000
+    users:
+      - vrubert
+      - borillo
+
+  deploy:
+      svnurl: http://jira.uji.es/repos/uji/%s/%s
+      etcd_environment_url:  http://conf.uji.es/v2/keys/ujiapps/apps/all.yaml
+      etcd_app_properties_url: http://conf.uji.es/v2/keys/ujiapps/apps/%s/app.properties
+      workdir: /tmp/shipui

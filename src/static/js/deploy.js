@@ -34,15 +34,15 @@ function showMessageDeployFinished() {
 }
 
 function fillProjectBranches(project) {
-  $.get('/deploy/versions', project, function(data, status) {
+  $.get('/deploy/versions', project, function (data, status) {
     var versions = data.versions;
     $('select[name="version"]').show();
 
-    var versionSelect = $('select[name="version"]');
-    versionSelect.empty();
-    versionSelect.append('<option value="trunk">trunk</option>');
+    var $versionSelect = $('select[name=version]');
+    $versionSelect.empty();
+    $versionSelect.append('<option value="trunk">trunk</option>');
     for (var i in versions) {
-      versionSelect.append('<option value="' + versions[i] + '">' + versions[i] + '</option>');
+      $versionSelect.append('<option value="' + versions[i] + '">' + versions[i] + '</option>');
     }
   });
 }
@@ -55,9 +55,9 @@ function getSelectedProject() {
   };
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
 
-  $('form button').click(function() {
+  $('form button').click(function () {
     //socket.emit('deploy start event', {data: $("select option:selected").text()});
     showMessageDeploying();
 
@@ -66,11 +66,11 @@ $(document).ready(function() {
       url: $('form.deploy-form').attr('action'),
       data: JSON.stringify(getSelectedProject(), null, '\t'),
       contentType: 'application/json;charset=UTF-8',
-      success: function(data, status) {
+      success: function (data, status) {
         showMessageDeployFinished();
       },
 
-      error: function(error) {
+      error: function (error) {
         showMessageErrorDeploying();
       },
     });
@@ -80,20 +80,20 @@ $(document).ready(function() {
 
   fillProjectBranches(getSelectedProject());
 
-  $('select[name=app]').change(function() {
+  $('select[name=app]').change(function () {
     fillProjectBranches(getSelectedProject());
   });
 
-  socket.on('disconnect', function() {
+  socket.on('disconnect', function () {
     console.log('disonnected');
   });
 
-  socket.on('deploy-log', function(response) {
+  socket.on('deploy-log', function (response) {
     $('pre.log').html(ansispan(response.data));
     socket.emit('received', 'ok');
   });
 
-  socket.on('deploy finished event', function(response) {
+  socket.on('deploy finished event', function (response) {
     var current = $('pre.log').html();
     $('pre.log').html(current + '\nFinished.\n');
     running = false;
