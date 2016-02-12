@@ -25,7 +25,6 @@ webserver_config = config.get('webserver')
 app = flask.Flask("shipui")
 app.config['SECRET_KEY'] = webserver_config.get('websockets_secret_key')
 socketio = SocketIO(app)
-lsm = LSM(webserver_config)
 
 app.register_blueprint(api_app, url_prefix='/api')
 app.register_blueprint(deploy_app, url_prefix='/deploy')
@@ -44,13 +43,14 @@ def logout():
 
 @app.before_request
 def before_request():
+    lsm = LSM(webserver_config)
     flask.g.user = lsm.get_login()
 
 @app.after_request
 def after_request(res):
+    lsm = LSM(webserver_config)
     if not lsm.get_login():
         lsm.login()
-
     return lsm.compose_response(res)
 
 
